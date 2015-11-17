@@ -16,9 +16,15 @@ var pageSchema = new Schema({
 	author: { type: Schema.Types.ObjectId, ref: 'User'}
 });
 
+pageSchema.pre('validate', function(next) {
+	this.urlTitle = this.title.replace(/\W/g,'').replace(/\s+/g,'_');
+	next();
+});
+
 pageSchema.virtual('route').get(function() {
 	return '/wiki/' + this.urlTitle;
-})
+});
+
 
 var userSchema = new Schema({
 	name: { type: String, required: true },
