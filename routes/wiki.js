@@ -8,27 +8,31 @@ wiki.get('/', function(req, res) {
   // res.status(200).render('index');
 });
 
-wiki.post('/', function(req,res) {
+wiki.post('/', function(req,res, next) {
 	var page = new Page({
 		title: req.body.title,
-		// urlTitle: ' ',
 		content: req.body['content-text'],
 		status: req.body['page-status'],
-		// author: req.body['author-name']
+        tags: req.body['page-tags']
 	});
 
 	page.save(function(err) {
 		if(err) res.render('error', { error: err });
 	})
-	.then(function() {
-		res.redirect('/');
+	.then(function(page) {
+		res.redirect(page.urlTitle);
 	})
-	// res.json(req.body);
-	// res.status(201).render('index');
 });
 
 wiki.get('/add/', function(req,res) {
 	res.status(200).render('addpage');
+});
+
+wiki.get('/:page', function(req, res) {
+  Page.findOne({urlTitle: req.params.page}).exec()
+    .then(function(page) {
+      res.render('wikipage', {page: page});
+  });
 });
 
 module.exports = wiki;

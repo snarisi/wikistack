@@ -3,6 +3,7 @@ var app = express();
 var routes = require('./routes/');
 var morgan = require('morgan');
 var swig = require('swig');
+require('./filters')(swig);
 var bodyParser = require('body-parser');
 var PORT = 3000;
 

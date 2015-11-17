@@ -13,7 +13,8 @@ var pageSchema = new Schema({
 	content: { type: String, required: true },
 	date: { type: Date, default: Date.now },
 	status: { type: String, enum: ['open', 'closed'] },
-	author: { type: Schema.Types.ObjectId, ref: 'User'}
+	author: { type: Schema.Types.ObjectId, ref: 'User'},
+    tags: {type: [String] }
 });
 
 pageSchema.pre('validate', function(next) {
@@ -21,10 +22,18 @@ pageSchema.pre('validate', function(next) {
 	next();
 });
 
+pageSchema.pre('validate', function(next) {
+    this.tags = this.tags[0].replace(/,\s+/g, ',').split(',');
+    next();
+});
+
 pageSchema.virtual('route').get(function() {
 	return '/wiki/' + this.urlTitle;
 });
 
+pageSchema.statics.findByTags = function(tags) {
+  return this.find({ tags: { $in: tags } });
+}
 
 var userSchema = new Schema({
 	name: { type: String, required: true },
