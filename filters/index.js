@@ -5,7 +5,7 @@ module.exports = function(swig) {
   
   var tagLinks = function(tags) {
     return tags.map(function(tag) {
-      return '<a href="' + '#' + '">' + tag + '</a>';
+      return '<a href="../search/results/?search-tags=' + tag + '">' + tag + '</a>';
     }).join(', ');
   };
   

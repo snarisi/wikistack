@@ -12,7 +12,7 @@ router.use('/search', search);
 router.get('/', function(req, res) {
   Page.find().exec()
     .then(function(pages) {
-      res.render('index', {pages: pages});
+      res.render('index', { title: 'WikiStack Pages', pages: pages});
   });
 //  res.status(200).render('index');
 });
