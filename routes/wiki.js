@@ -13,28 +13,23 @@ wiki.post('/', function(req,res, next) {
   User.findOrCreate({
     name: req.body['author-name'],
     email: req.body['author-email']
-  }).then(function(authorId) {
-    console.log(authorId);
-  });
+  })
+    .then(function(author) {
+      var page = new Page({
+          title: req.body.title,
+          content: req.body['content-text'],
+          status: req.body['page-status'],
+          tags: req.body['page-tags'],
+          author: author
+      });
 
-  console.log('\n\AUTHOR\n',author,'\n');
-
-	var page = new Page({
-		title: req.body.title,
-		content: req.body['content-text'],
-		status: req.body['page-status'],
-    tags: req.body['page-tags'],
-    author: author
-	});
-
-  
-
-	page.save(function(err) {
-		if(err) res.render('error', { error: err });
-	})
-	.then(function(page) {
-		res.redirect(page.urlTitle);
-	})
+      page.save(function(err) {
+          if(err) res.render('error', { error: err });
+      })
+        .then(function(page) {
+          res.redirect(page.urlTitle);
+        })
+    });
 });
 
 wiki.get('/add/', function(req,res) {

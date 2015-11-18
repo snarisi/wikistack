@@ -53,24 +53,16 @@ var userSchema = new Schema({
 });
 
 userSchema.statics.findOrCreate = function(user) {
-  this.findOne({ email: user.email })
-  .then(function(userSearch) {
-    if(!userSearch) {
-      var newUser = new User({
-        name: user.name,
-        email: user.email
-      });
-
-      return newUser.save(function(err) {
-        if(err) throw err;
-      })
-    } else {
-      return userSearch;
-    }
-  })
-  .then(function(newUser) {
-    return newUser;
-  })
+  var self = this;
+  
+  return this.findOne({ email: user.email })
+    .then(function(userSearch) {
+      if(!userSearch) {
+        return self.create(user);
+      } else {
+        return userSearch;
+      }
+    });
 }
 
 var Page = mongoose.model('Page', pageSchema);

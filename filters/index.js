@@ -9,8 +9,14 @@ module.exports = function(swig) {
     }).join(', ');
   };
   
+  var userLink = function(user) {
+    return '<a href="../users/' + user._id.toString() + '">' + user.name + '</a>'
+  }
+  
   pageLink.safe = true;
   tagLinks.safe = true;
+  userLink.safe = true;
   swig.setFilter('pageLink', pageLink);
   swig.setFilter('tagLinks', tagLinks);
+  swig.setFilter('userLink', userLink);
 }

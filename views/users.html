@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>{{ title }}</h3>
+  <hr>
+    <ul class="list-unstyled">
+
+      {% for user in users %}
+        <li>{{ user | userLink }}</li>
+      {% endfor %}
+
+    </ul>
+{% endblock %}
